@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Expenses</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .actions a {
+            text-decoration: none;
+            padding: 8px;
+            border-radius: 3px;
+            color: #fff;
+        }
+
+        .edit-btn {
+            background-color: #8CC84B;
+        }
+
+        .delete-btn {
+            background-color: tomato;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>View Expenses</h1>
+
+    <!-- Filtering Options -->
+    <form method="get">
+        <label for="date_filter">Filter by Date:</label>
+        <input type="date" id="date_filter" name="date_filter">
+        <label for="search_query">Search by Expense Name:</label>
+        <input type="text" id="search_query" name="search_query">
+        <button type="submit">Apply Filters</button>
+    </form>
+
+    <!-- Expenses Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Date of Expense</th>
+                <th>Amount</th>
+                <th>Updated at</th>
+                <th>Created by</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.name }}</td>
+                    <td>{{ expense.category }}</td>
+                    <td>{{ expense.date }}</td>
+                    <td>₹{{ expense.amount }}</td>
+                    <td>{{ expense.updated_at }}</td>
+                    <td>
+                        {% if expense.created_by == request.user %}
+                            me
+                        {% else %}
+                            {{ expense.created_by.username }}
+                        {% endif %}
+                    </td>
+                    <td class="actions">
+                        {% if expense.created_by == request.user %}
+                            <a href="{% url 'edit_expense' expense.id %}" class="edit-btn">&#9998; Edit</a>
+                            <a href="{% url 'delete_expense' expense.id %}" class="delete-btn">&#128465; Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Add any additional HTML elements or JS scripts here for enhanced functionality -->
+
+</body>
+
+</html>

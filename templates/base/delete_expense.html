@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Expense</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .messages {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        .messages li {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        p {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button, a {
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        button {
+            background-color: #e74c3c;
+        }
+
+        a {
+            background-color: #3498db;
+            text-decoration: none;
+        }
+    </style>
+    <!-- Add any additional CSS or JS imports for styling or functionality here -->
+</head>
+<body>
+    <div class="container">
+        <h1>Delete Expense</h1>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Confirmation Prompt -->
+        <p>Are you sure you want to delete the expense "{{ expense.name }}"?</p>
+        
+        <!-- The Delete Expense Form -->
+        <form method="post" action="{% url 'delete_expense' expense.id %}">
+            {% csrf_token %}
+            <button type="submit">Yes, delete it</button>
+            <a href="{% url 'view_expense' %}">Cancel</a>
+        </form>
+    </div>
+
+    <!-- Add any additional HTML elements or JS scripts here for enhanced functionality -->
+
+</body>
+</html>
